@@ -27,6 +27,10 @@ Audio="*res://scripts/audio.gd"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 
+[dotnet]
+
+project/assembly_name="Starter Kit 3D Platformer"
+
 [editor]
 
 movie_writer/movie_file="C:/Users/Kenney/Desktop/video-footage.avi"
