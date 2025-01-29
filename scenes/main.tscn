@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bqqgyqafm7xwp"]
+[gd_scene load_steps=20 format=3 uid="uid://bqqgyqafm7xwp"]
 
 [ext_resource type="Environment" uid="uid://bqnqgflivjvue" path="res://scenes/main-environment.tres" id="1_ahusb"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_onms2"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="11_apvpm"]
 [ext_resource type="PackedScene" uid="uid://dy017k58p20sk" path="res://objects/cloud.tscn" id="13_drtpy"]
 [ext_resource type="Texture2D" uid="uid://cd7oyc56ehkx1" path="res://sprites/coin.png" id="13_jfda3"]
+[ext_resource type="Script" path="res://scripts/Panel.cs" id="14_3eddf"]
+[ext_resource type="FontFile" uid="uid://j1s8knqa1441" path="res://fonts/Summer Concert.otf" id="15_kb6nn"]
 [ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="17_tk810"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_38ys3"]
@@ -19,6 +21,18 @@ font = ExtResource("17_tk810")
 font_size = 48
 shadow_color = Color(0, 0, 0, 0.376471)
 shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_unvk1"]
+font = ExtResource("15_kb6nn")
+font_size = 90
+
+[sub_resource type="LabelSettings" id="LabelSettings_626k1"]
+font = ExtResource("15_kb6nn")
+font_size = 90
+
+[sub_resource type="LabelSettings" id="LabelSettings_jycgk"]
+font = ExtResource("15_kb6nn")
+font_size = 90
 
 [node name="Main" type="Node3D"]
 
@@ -162,3 +176,37 @@ offset_right = 368.0
 offset_bottom = 123.0
 text = "0"
 label_settings = SubResource("LabelSettings_38ys3")
+
+[node name="Panel" type="Panel" parent="HUD"]
+offset_left = 976.0
+offset_top = 622.0
+offset_right = 1263.0
+offset_bottom = 701.0
+script = ExtResource("14_3eddf")
+
+[node name="Minutes" type="Label" parent="HUD/Panel"]
+layout_mode = 0
+offset_left = 9.0
+offset_right = 101.0
+offset_bottom = 81.0
+text = "00:"
+label_settings = SubResource("LabelSettings_unvk1")
+horizontal_alignment = 2
+
+[node name="Seconds" type="Label" parent="HUD/Panel"]
+layout_mode = 0
+offset_left = 98.0
+offset_right = 189.0
+offset_bottom = 81.0
+text = "00."
+label_settings = SubResource("LabelSettings_626k1")
+horizontal_alignment = 2
+
+[node name="Msec" type="Label" parent="HUD/Panel"]
+layout_mode = 0
+offset_left = 192.0
+offset_right = 288.0
+offset_bottom = 81.0
+text = "000"
+label_settings = SubResource("LabelSettings_jycgk")
+horizontal_alignment = 2

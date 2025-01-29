@@ -44,6 +44,25 @@ public partial class Player : CharacterBody3D
         _soundFootsteps = GetNode<AudioStreamPlayer>("SoundFootsteps");
         _model = GetNode<Node3D>("Character");
         _animation = GetNode<AnimationPlayer>("Character/AnimationPlayer");
+
+
+        // Register the signal
+        AddUserSignal(nameof(CoinCollectedEventHandler));
+
+        // Connect the signal to a method
+        Connect(nameof(CoinCollectedEventHandler), new Callable(this, nameof(CollectCoin)));
+
+        // Get the CanvasLayer node (HUD)
+        var hud = GetNode<CanvasLayer>("/root/Main/HUD");
+
+        // Get the Panel node (For Timer)
+        var panel = GetNode<Panel>("/root/Main/HUD/Panel");
+
+        // Connect the signal to the HUD's _on_coin_collected method
+        Connect(nameof(CoinCollectedEventHandler), new Callable(hud, "_on_coin_collected"));
+
+        // Connect the signal to the Panel's OnCoinCollected method
+        Connect(nameof(CoinCollectedEventHandler), new Callable(panel, "OnCoinCollected"));
     }
 
 
@@ -194,9 +213,10 @@ public partial class Player : CharacterBody3D
 
     private void CollectCoin()
     {
-        coins += 1;
-        EmitSignal(nameof(CoinCollectedEventHandler), coins);
-
+        coins += 1; // Increase coin count
+        EmitSignal(nameof(CoinCollectedEventHandler), coins); // Emit the signal
     }
+
+
 }
 
