@@ -216,7 +216,7 @@ public partial class Player : CharacterBody3D
         coins += 1; // Increase coin count
         EmitSignal(nameof(CoinCollectedEventHandler), coins); // Emit the signal
     }
-
+ 
 
 }
 
