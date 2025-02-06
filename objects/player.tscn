@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dl2ed4gkybggf"]
+[gd_scene load_steps=11 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_8ue7j"]
 [ext_resource type="PackedScene" uid="uid://c0e27836xgmhi" path="res://objects/character.tscn" id="2_nero3"]
@@ -6,6 +6,7 @@
 [ext_resource type="ArrayMesh" uid="uid://deu06eho4c74" path="res://meshes/dust.res" id="4_mvhqy"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/walking.ogg" id="5_ics1s"]
 [ext_resource type="AudioStream" uid="uid://dw2m5fxhfjykq" path="res://sounds/jump.ogg" id="6_1i54u"]
+[ext_resource type="Script" path="res://scripts/GunActive.cs" id="7_b2u1d"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gdq8c"]
 radius = 0.3
@@ -64,5 +65,11 @@ autoplay = true
 stream = ExtResource("6_1i54u")
 
 [node name="SoundLand" type="AudioStreamPlayer" parent="."]
+
+[node name="gunActive" type="Timer" parent="."]
+wait_time = 2.0
+script = ExtResource("7_b2u1d")
+
+[connection signal="timeout" from="gunActive" to="." method="_on_gun_active_timeout"]
 
 [editable path="Character"]

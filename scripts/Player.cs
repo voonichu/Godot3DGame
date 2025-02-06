@@ -5,6 +5,7 @@ public partial class Player : CharacterBody3D
 {
     [Signal]
     public delegate void CoinCollectedEventHandler(int coins);
+    public delegate void OnTimeoutEventHandler();
     
     [ExportSubgroup("Components")]
     [Export]
@@ -15,6 +16,7 @@ public partial class Player : CharacterBody3D
     public float movementSpeed  = 250;
     [Export]
     public float jumpStrength  = 7;
+    public float burstStrength = 125;
 
 
     public Vector3 movementVelocity;
@@ -25,6 +27,8 @@ public partial class Player : CharacterBody3D
 
     public bool jumpSingle = true;
     public bool jumpDouble = true;
+    public bool gunActive = true;
+    public bool gunShot = false;
 
     public int coins = 0;
 
@@ -48,6 +52,7 @@ public partial class Player : CharacterBody3D
 
         // Register the signal
         AddUserSignal(nameof(CoinCollectedEventHandler));
+        AddUserSignal(nameof(OnTimeoutEventHandler));
 
         // Connect the signal to a method
         Connect(nameof(CoinCollectedEventHandler), new Callable(this, nameof(CollectCoin)));
@@ -63,6 +68,9 @@ public partial class Player : CharacterBody3D
 
         // Connect the signal to the Panel's OnCoinCollected method
         Connect(nameof(CoinCollectedEventHandler), new Callable(panel, "OnCoinCollected"));
+
+        // Connect the OnTimeout signal to the method
+        Connect(nameof(OnTimeoutEventHandler), new Callable(this, nameof(StartGunCooldown)));
     }
 
 
@@ -81,10 +89,14 @@ public partial class Player : CharacterBody3D
         MoveAndSlide();
 
         // Rotation
-        if (movementVelocity.Length() > 0)
+        if (movementVelocity.Length() > 0 && !gunShot)
         {
             // Calculate the rotation direction based on movementVelocity
             rotationDirection = Mathf.Atan2(movementVelocity.X, movementVelocity.Z);
+        }
+        else if (gunShot)
+        {
+            gunShot = false;
         }
 
         Rotation = new Vector3(
@@ -179,6 +191,15 @@ public partial class Player : CharacterBody3D
             }
         }
 
+        // Burst shot
+        if (Input.IsActionJustPressed("shoot_burst"))
+        {
+            if (gunActive)
+            {
+            movementVelocity = ShootBurst(movementVelocity);
+            }
+        }
+
     }
 
     private void HandleGravity(double delta)
@@ -209,6 +230,21 @@ public partial class Player : CharacterBody3D
             jumpDouble = false;
         }
 
+    }
+
+    private Vector3 ShootBurst(Vector3 vel)
+    {
+        vel.X -= Mathf.Sin(rotationDirection) * burstStrength;
+        vel.Z -= Mathf.Cos(rotationDirection) * burstStrength;
+        gunShot = true;
+        return vel;
+    }
+
+    private void StartGunCooldown()
+    {
+        gunActive = false;
+        GetNode<Timer>("GunCooldown").Start();
+        EmitSignal(nameof(OnTimeoutEventHandler));
     }
 
     private void CollectCoin()
