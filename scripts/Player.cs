@@ -70,7 +70,7 @@ public partial class Player : CharacterBody3D
         Connect(nameof(CoinCollectedEventHandler), new Callable(panel, "OnCoinCollected"));
 
         // Connect the OnTimeout signal to the method
-        Connect(nameof(OnTimeoutEventHandler), new Callable(this, nameof(StartGunCooldown)));
+        Connect(nameof(OnTimeoutEventHandler), new Callable(this, nameof(OnTimeout)));
     }
 
 
@@ -253,6 +253,10 @@ public partial class Player : CharacterBody3D
         EmitSignal(nameof(CoinCollectedEventHandler), coins); // Emit the signal
     }
  
+    public void OnTimeout()
+    {
+        GD.Print("cd");
+    }
 
 }
 

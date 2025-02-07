@@ -68,6 +68,7 @@ stream = ExtResource("6_1i54u")
 
 [node name="gunActive" type="Timer" parent="."]
 wait_time = 2.0
+autostart = true
 script = ExtResource("7_b2u1d")
 
 [connection signal="timeout" from="gunActive" to="." method="_on_gun_active_timeout"]
