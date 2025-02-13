@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bqqgyqafm7xwp"]
+[gd_scene load_steps=21 format=3 uid="uid://bqqgyqafm7xwp"]
 
 [ext_resource type="Environment" uid="uid://bqnqgflivjvue" path="res://scenes/main-environment.tres" id="1_ahusb"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_onms2"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://cd7oyc56ehkx1" path="res://sprites/coin.png" id="13_jfda3"]
 [ext_resource type="Script" path="res://scripts/Panel.cs" id="14_3eddf"]
 [ext_resource type="FontFile" uid="uid://j1s8knqa1441" path="res://fonts/Summer Concert.otf" id="15_kb6nn"]
+[ext_resource type="Script" path="res://database/DatabaseConnector.cs" id="16_nab4b"]
 [ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="17_tk810"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_38ys3"]
@@ -210,3 +211,6 @@ offset_bottom = 81.0
 text = "000"
 label_settings = SubResource("LabelSettings_jycgk")
 horizontal_alignment = 2
+
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("16_nab4b")

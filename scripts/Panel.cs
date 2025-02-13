@@ -8,6 +8,7 @@ public partial class Panel : Node
 	private int seconds = 0;
 	private int msec = 0;
 
+	private DatabaseConnector _databaseConnector;
 
 	private Label _minutes;
 	private Label _seconds;
@@ -17,6 +18,8 @@ public partial class Panel : Node
 		_minutes = GetNode<Label>("Minutes");
 		_seconds = GetNode<Label>("Seconds");
 		_msec = GetNode<Label>("Msec");
+
+		_databaseConnector = GetNode<DatabaseConnector>("/root/DatabaseConnector");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,6 +51,7 @@ public partial class Panel : Node
 		{
 			Stop();
 			GD.Print("Congradulations! You collected all the coins in: " + GetTime());
+			_databaseConnector.ConnectToDatabase(GetTime());
 		}
 	}
 }
