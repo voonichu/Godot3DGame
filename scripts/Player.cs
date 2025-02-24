@@ -22,6 +22,8 @@ public partial class Player: CharacterBody3D
     float jumpPower = 20f;
     [Export]
     float shootPower = 20f;
+    [Export]
+    float rotationSpeed = 10f;
 
     public int coins = 0;
 
@@ -29,11 +31,11 @@ public partial class Player: CharacterBody3D
 
 
     [Export(PropertyHint.Range, "0.1, 1.0")]
-    float mouseSensitivity = 0.3f;
+    float mouseSensitivity = 0.1f;
     [Export(PropertyHint.Range, "-90, 0, 1")]
-    float minPitch = -90f;
+    float minPitch = -45f;
     [Export(PropertyHint.Range, "0, 90, 1")]
-    float maxPitch = 90f;
+    float maxPitch = 45f;
 
     public bool previouslyFloored = false;
 
@@ -42,6 +44,7 @@ public partial class Player: CharacterBody3D
     private float rotationDirection;
     private bool gunActive;
     private bool cameraMoving = false;
+    private Vector3 lastDirection = Vector3.Forward;
     
 
     private Node3D _cameraPivot;
@@ -67,7 +70,7 @@ public partial class Player: CharacterBody3D
 
         _bulletScene = ResourceLoader.Load<PackedScene>("res://objects/Bullet.tscn");
         _bulletSpawnPoint = GetNode<Node3D>("Character/character/root/torso/arm-left/Shotgun/BulletSpawnPoint");
-        _player = GetNode<Node3D>("Character");
+        _player = GetNode<Node3D>("Character/character");
 
         _soundLand = GetNode<AudioStreamPlayer>("SoundLand");
         _soundJump = GetNode<AudioStreamPlayer>("SoundJump");
@@ -146,13 +149,13 @@ public partial class Player: CharacterBody3D
                 {
                     rotationDirection = Mathf.Atan2(_targetVelocity.X, _targetVelocity.Z);
                 }
-                
+                /*
                 _player.Rotation = new Vector3(
                     _player.Rotation.X,
                     Mathf.LerpAngle(_player.Rotation.Y, rotationDirection, (float)delta * 10),
                     _player.Rotation.Z 
                     );
-                    
+                    */
          // Animation for scale (jumping and landing)
         _model.Scale = _model.Scale.Lerp(new Vector3(1, 1, 1), (float)delta * 10);
 
@@ -174,28 +177,26 @@ public partial class Player: CharacterBody3D
 
         direction.X = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
         direction.Z = Input.GetActionStrength("move_back") - Input.GetActionStrength("move_forward");
-
+        lastDirection = direction;
         direction = direction.Rotated(Vector3.Up, _camera.GlobalTransform.Basis.GetEuler().Y);
 
         if (direction.Length() > 1)
         {
             direction = direction.Normalized();
-            if (cameraMoving)
-            {
-                // Calculate the rotation direction based on input direction
-            
-           
-            }
-            else
-            {
-                _player.Basis = Basis.LookingAt(-direction);
-            }
-            
         }
         else 
         {
             velocity = Vector3.Zero;
         }
+        if (lastDirection.Length() !> 0)
+        {
+            _player.Rotation = new Vector3(
+            _player.Rotation.X,
+            Mathf.LerpAngle(_player.Rotation.Y, Mathf.Atan2(lastDirection.X, lastDirection.Z), (float)delta  * rotationSpeed),
+            _player.Rotation.Z
+            );
+        }
+        
 
         if (Input.IsActionJustPressed("shoot_burst")) 
         {
