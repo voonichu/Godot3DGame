@@ -5,6 +5,7 @@ public partial class Player: CharacterBody3D
 {
     [Signal]
     public delegate void CoinCollectedEventHandler(int coins);
+
     public delegate void OnTimeoutEventHandler();
 
 
@@ -24,8 +25,11 @@ public partial class Player: CharacterBody3D
     float shootPower = 20f;
     [Export]
     float rotationSpeed = 10f;
+    [Export]
+    float burstSpeed = 10f;
 
     public int coins = 0;
+    public int numJumps = 0;
 
     private Vector3 _targetVelocity = Vector3.Zero;
 
@@ -43,7 +47,6 @@ public partial class Player: CharacterBody3D
     private float yVelocity;
     private float rotationDirection;
     private bool gunActive;
-    private bool cameraMoving = false;
     private Vector3 lastDirection = Vector3.Forward;
     
 
@@ -62,8 +65,10 @@ public partial class Player: CharacterBody3D
     private Node3D _model;
     private AnimationPlayer _animation;
 
+
     public override void _Ready()
     {
+        // External nodes are being called when the player is created within a scene
         _cameraPivot = GetNode<Node3D>("CameraPivot");
         _camera = GetNode<Camera3D>("CameraPivot/CameraBoom/Camera3D");
         _cameraBoom = GetNode<SpringArm3D>("CameraPivot/CameraBoom");
@@ -78,6 +83,7 @@ public partial class Player: CharacterBody3D
         _soundFootsteps = GetNode<AudioStreamPlayer>("SoundFootsteps");
         _model = GetNode<Node3D>("Character");
         _animation = GetNode<AnimationPlayer>("Character/AnimationPlayer");
+
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
@@ -102,6 +108,7 @@ public partial class Player: CharacterBody3D
 
         // Connect the OnTimeout signal to the method
         Connect(nameof(OnTimeoutEventHandler), new Callable(this, nameof(OnTimeout)));
+
     }
 
     public override void _Process(double delta)
@@ -117,7 +124,6 @@ public partial class Player: CharacterBody3D
         base._Input(@event);
         if (@event is InputEventMouseMotion motionEvent)
         {
-            cameraMoving = true;
             Vector3 rotDeg = RotationDegrees;
             rotDeg.Y -=motionEvent.Relative.X * mouseSensitivity;
             RotationDegrees = rotDeg;
@@ -128,8 +134,6 @@ public partial class Player: CharacterBody3D
             _cameraPivot.RotationDegrees = rotDeg;
 
         }
-        else
-            cameraMoving = false;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -144,19 +148,8 @@ public partial class Player: CharacterBody3D
             GetTree().ReloadCurrentScene();
         }
         
-        // Model rotation
-        if (_targetVelocity.Length() > 1)
-                {
-                    rotationDirection = Mathf.Atan2(_targetVelocity.X, _targetVelocity.Z);
-                }
-                /*
-                _player.Rotation = new Vector3(
-                    _player.Rotation.X,
-                    Mathf.LerpAngle(_player.Rotation.Y, rotationDirection, (float)delta * 10),
-                    _player.Rotation.Z 
-                    );
-                    */
-         // Animation for scale (jumping and landing)
+               
+        // Animation for scale (jumping and landing)
         _model.Scale = _model.Scale.Lerp(new Vector3(1, 1, 1), (float)delta * 10);
 
         // Animation when landing
@@ -184,11 +177,9 @@ public partial class Player: CharacterBody3D
         {
             direction = direction.Normalized();
         }
-        else 
-        {
-            velocity = Vector3.Zero;
-        }
-        if (lastDirection.Length() !> 0)
+
+        // Handle player rotation taking camera into account
+        if (lastDirection.Length() !> 0) // If there is no input, don't rotate
         {
             _player.Rotation = new Vector3(
             _player.Rotation.X,
@@ -196,28 +187,40 @@ public partial class Player: CharacterBody3D
             _player.Rotation.Z
             );
         }
-        
-
+        Vector3 bSpeed = Vector3.Zero;
+        // Handle player weapon
         if (Input.IsActionJustPressed("shoot_burst")) 
         {
             var bullet = _bulletScene.Instantiate<RigidBody3D>();
             GetTree().Root.AddChild(bullet);
 
+            // Get rotation of player and use it to set the burst speed of the player
+            // FIXME: Burst direction not working as intended
+            var rot = _player.Transform.Basis.GetEuler();
+            bSpeed.X = rot.Y;
+            bSpeed.Z = rot.Y;
+            GD.Print(bSpeed);
+
             // Set position of bullet
             bullet.Transform = _bulletSpawnPoint.Transform;
             // Apply impulse
-            bullet.ApplyImpulse(_bulletSpawnPoint.GlobalTransform.Basis.Y * shootPower * -1);
+            bullet.ApplyImpulse(_bulletSpawnPoint.GlobalTransform.Basis.Z * shootPower);
 
-            // 5 second dynamic yield
-            await ToSignal(GetTree().CreateTimer(5), "timeout");
-            bullet.QueueFree(); // Destroy bullet
 
             if (Input.MouseMode != Input.MouseModeEnum.Captured)
             {
                 Input.MouseMode = Input.MouseModeEnum.Captured;
             }
+
+
+            // 5 second dynamic yield
+           /* await ToSignal(GetTree().CreateTimer(5), "timeout");
+            bullet.QueueFree(); // Destroy bullet */
+
+            
         }
 
+        // Handles player movement jumping and acceleration
         if (IsOnFloor())
         {
             yVelocity = -0.01f;
@@ -229,15 +232,17 @@ public partial class Player: CharacterBody3D
 
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
         {
+            numJumps++;
             _soundJump.Play();
             yVelocity = jumpPower;
         }
 
         float accel = IsOnFloor() ? acceleration : airAcceleration; // applies acceleration on ground, air acceleration in air
         _targetVelocity = velocity.Lerp(direction * speed, accel * (float)delta);
+        Vector3 _burstVelocity = velocity.Lerp(bSpeed * burstSpeed, (float)delta * maxTerminalVelocity);
         _targetVelocity.Y = yVelocity;
 
-        Velocity = _targetVelocity;
+        Velocity = _targetVelocity + _burstVelocity;
         MoveAndSlide();
     }
 
@@ -261,7 +266,7 @@ public partial class Player: CharacterBody3D
                 if (speedFactor > 0.3)
                 {
                     _soundFootsteps.StreamPaused = false;
-                    //_soundFootsteps.PitchScale = speedFactor;
+                    //_soundFootsteps.PitchScale = speedFactor; // Pitch scale does not work with velocity values in this movement system
                 }
 
                 if (speedFactor > 0.75)
@@ -294,6 +299,7 @@ public partial class Player: CharacterBody3D
         coins += 1; // Increase coin count
         EmitSignal(nameof(CoinCollectedEventHandler), coins); // Emit the signal
     }
+
  
     public void OnTimeout()
     {

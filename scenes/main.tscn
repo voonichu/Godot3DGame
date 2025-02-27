@@ -41,6 +41,7 @@ environment = ExtResource("1_ahusb")
 [node name="Player" parent="." instance=ExtResource("2_onms2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.0111408)
 airAcceleration = 15.0
+burstSpeed = 500.0
 
 [node name="World" type="Node3D" parent="."]
 
