@@ -51,7 +51,7 @@ public partial class Panel : Node
 		{
 			Stop();
 			GD.Print("Congradulations! You collected all the coins in: " + GetTime());
-			_databaseConnector.ConnectToDatabase(GetTime());
+			_databaseConnector.ConnectToDatabase(GetTime(), coins);
 		}
 	}
 }

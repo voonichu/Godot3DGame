@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bqqgyqafm7xwp"]
+[gd_scene load_steps=22 format=3 uid="uid://bqqgyqafm7xwp"]
 
 [ext_resource type="Environment" uid="uid://bqnqgflivjvue" path="res://scenes/main-environment.tres" id="1_ahusb"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_onms2"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://cd7oyc56ehkx1" path="res://sprites/coin.png" id="13_jfda3"]
 [ext_resource type="Script" path="res://scripts/Panel.cs" id="14_3eddf"]
 [ext_resource type="FontFile" uid="uid://j1s8knqa1441" path="res://fonts/Summer Concert.otf" id="15_kb6nn"]
+[ext_resource type="Script" path="res://database/LeaderboardUI.cs" id="16_ac03j"]
 [ext_resource type="Script" path="res://database/DatabaseConnector.cs" id="16_nab4b"]
 [ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="17_tk810"]
 
@@ -212,5 +213,52 @@ text = "000"
 label_settings = SubResource("LabelSettings_jycgk")
 horizontal_alignment = 2
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="LeaderboardUI" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_right = 329.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("16_ac03j")
+
+[node name="Panel" type="Panel" parent="HUD/LeaderboardUI"]
+layout_mode = 0
+offset_right = 729.0
+offset_bottom = 720.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/LeaderboardUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/LeaderboardUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/LeaderboardUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="HUD/LeaderboardUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Time"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="HUD/LeaderboardUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Coins"
+horizontal_alignment = 1
+
+[node name="Database" type="Node3D" parent="."]
 script = ExtResource("16_nab4b")
