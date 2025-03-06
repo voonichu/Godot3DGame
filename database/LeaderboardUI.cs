@@ -47,7 +47,7 @@ public partial class LeaderboardUI : Control
 			coinsLabel.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
 
 			playerLabel.HorizontalAlignment = HorizontalAlignment.Center;
-            timeLabel.HorizontalAlignment = HorizontalAlignment.Center;
+			timeLabel.HorizontalAlignment = HorizontalAlignment.Center;
 			coinsLabel.HorizontalAlignment = HorizontalAlignment.Center;
 			
 
