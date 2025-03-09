@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dl2ed4gkybggf"]
+[gd_scene load_steps=14 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_8ue7j"]
 [ext_resource type="PackedScene" uid="uid://c0e27836xgmhi" path="res://objects/character.tscn" id="2_nero3"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://xnxidwkp46un" path="res://sounds/land.ogg" id="6_870kh"]
 [ext_resource type="Script" path="res://scripts/GunActive.cs" id="7_b2u1d"]
 [ext_resource type="PackedScene" uid="uid://d3xk5kpjnq6w4" path="res://models/daily_doodle_shotgun.glb" id="8_ou4dn"]
+[ext_resource type="PackedScene" uid="uid://baepxvirs8pj2" path="res://scenes/pause.tscn" id="10_rncbc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gdq8c"]
 radius = 0.3
@@ -84,6 +85,10 @@ transform = Transform3D(9.03977, 0.0511416, -0.961583, 0.0511416, 9.03977, 0.961
 transform = Transform3D(1, 0, 0, 0, 0.947462, 0.319869, 0, -0.319869, 0.947462, 0, 1.45088, 3.32305)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraBoom"]
+
+[node name="Pause" parent="." instance=ExtResource("10_rncbc")]
+process_mode = 2
+visible = false
 
 [connection signal="timeout" from="gunActive" to="." method="_on_gun_active_timeout"]
 

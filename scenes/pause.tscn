@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://baepxvirs8pj2"]
+
+[ext_resource type="Script" path="res://scenes/Pause.cs" id="1_ohw78"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_tmkbv"]
+specular_color = Color(0.281187, 0.281187, 0.281187, 1)
+
+[node name="Pause" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ohw78")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.298039)
+layout_mode = 0
+offset_right = 1279.0
+offset_bottom = 718.0
+texture = SubResource("CanvasTexture_tmkbv")
+
+[node name="ContinueButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 300.0
+offset_right = 800.0
+offset_bottom = 350.0
+text = "Continue"
