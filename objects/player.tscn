@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dl2ed4gkybggf"]
+[gd_scene load_steps=16 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_8ue7j"]
 [ext_resource type="PackedScene" uid="uid://c0e27836xgmhi" path="res://objects/character.tscn" id="2_nero3"]
@@ -6,6 +6,12 @@
 [ext_resource type="ArrayMesh" uid="uid://deu06eho4c74" path="res://meshes/dust.res" id="4_mvhqy"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/walking.ogg" id="5_ics1s"]
 [ext_resource type="AudioStream" uid="uid://dw2m5fxhfjykq" path="res://sounds/jump.ogg" id="6_1i54u"]
+[ext_resource type="AudioStream" uid="uid://xnxidwkp46un" path="res://sounds/land.ogg" id="6_870kh"]
+[ext_resource type="Script" path="res://scripts/GunActive.cs" id="7_b2u1d"]
+[ext_resource type="PackedScene" uid="uid://d3xk5kpjnq6w4" path="res://models/daily_doodle_shotgun.glb" id="8_ou4dn"]
+[ext_resource type="Script" path="res://scripts/player_ui.gd" id="10_p10io"]
+[ext_resource type="PackedScene" uid="uid://baepxvirs8pj2" path="res://scenes/pause.tscn" id="10_rncbc"]
+[ext_resource type="Texture2D" uid="uid://dtc7gknvemix3" path="res://sprites/hud_heartFull.png" id="11_jlo7e"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gdq8c"]
 radius = 0.3
@@ -24,15 +30,13 @@ proximity_fade_distance = 0.25
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.249284, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("1_8ue7j")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 shape = SubResource("CapsuleShape3D_gdq8c")
-
-[node name="Character" parent="." instance=ExtResource("2_nero3")]
 
 [node name="Shadow" type="Decal" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
@@ -56,13 +60,67 @@ scale_amount_curve = SubResource("Curve_xh1e2")
 
 [node name="SoundFootsteps" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ics1s")
-volume_db = -5.0
-pitch_scale = 1.25
 autoplay = true
 
 [node name="SoundJump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_1i54u")
 
 [node name="SoundLand" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_870kh")
+
+[node name="gunActive" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+script = ExtResource("7_b2u1d")
+
+[node name="Character" parent="." instance=ExtResource("2_nero3")]
+
+[node name="Shotgun" parent="Character/character/root/torso/arm-left" index="0" instance=ExtResource("8_ou4dn")]
+transform = Transform3D(0.109381, 0.000618837, 0.0116351, 0.000618837, 0.109381, -0.0116351, -0.0116351, 0.0116351, 0.108762, 0.214122, 0.163561, 0.408647)
+
+[node name="BulletSpawnPoint" type="Node3D" parent="Character/character/root/torso/arm-left/Shotgun"]
+transform = Transform3D(9.03977, 0.0511416, -0.961583, 0.0511416, 9.03977, 0.961583, 0.961582, -0.961582, 8.98862, -0.377459, -1.35811, -3.69289)
+
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="CameraBoom" type="SpringArm3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.947462, 0.319869, 0, -0.319869, 0.947462, 0, 1.45088, 3.32305)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraBoom"]
+
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+script = ExtResource("10_p10io")
+
+[node name="Pause" parent="PlayerUI" instance=ExtResource("10_rncbc")]
+process_mode = 2
+visible = false
+
+[node name="HealthContainer" type="HBoxContainer" parent="PlayerUI"]
+offset_left = 60.0
+offset_top = 45.0
+offset_right = 341.0
+offset_bottom = 90.0
+
+[node name="Heart" type="TextureRect" parent="PlayerUI/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("11_jlo7e")
+
+[node name="Heart2" type="TextureRect" parent="PlayerUI/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("11_jlo7e")
+
+[node name="Heart3" type="TextureRect" parent="PlayerUI/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("11_jlo7e")
+
+[node name="Heart4" type="TextureRect" parent="PlayerUI/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("11_jlo7e")
+
+[node name="Heart5" type="TextureRect" parent="PlayerUI/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("11_jlo7e")
+
+[connection signal="timeout" from="gunActive" to="." method="_on_gun_active_timeout"]
 
 [editable path="Character"]

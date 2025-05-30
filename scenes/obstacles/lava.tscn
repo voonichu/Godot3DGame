@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfrrise2f4t30"]
+
+[ext_resource type="PackedScene" uid="uid://bgmnykaqqio22" path="res://objects/Frantic Kasi.glb" id="1_ap61k"]
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_11dq0"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_begvh"]
+height = 2.37962
+radius = 41.1237
+
+[node name="Lava" instance=ExtResource("1_ap61k")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+script = ExtResource("2_11dq0")
+can_hurt_player = true
+
+[node name="Area3D" type="Area3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3723, 0)
+shape = SubResource("CylinderShape3D_begvh")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

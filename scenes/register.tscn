@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://d0ifdc1wvnd7y"]
+
+[ext_resource type="Script" path="res://scripts/RegisterButton.cs" id="1_dlvwc"]
+[ext_resource type="Script" path="res://scripts/ReturnButton.cs" id="2_1ya0m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jeohj"]
+bg_color = Color(0.1, 0.1, 0.1, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0ln5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y01wj"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p077x"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t858w"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="PopupUI" type="PopupPanel"]
+size = Vector2i(500, 300)
+visible = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_jeohj")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 500.0
+offset_bottom = 300.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="UsernameInput" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_h0ln5")
+placeholder_text = "Username"
+
+[node name="PasswordInput" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_y01wj")
+placeholder_text = "Password"
+secret = true
+
+[node name="Register" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_p077x")
+text = "Register"
+script = ExtResource("1_dlvwc")
+
+[node name="Return" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_t858w")
+text = "Return"
+script = ExtResource("2_1ya0m")

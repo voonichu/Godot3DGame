@@ -7,8 +7,11 @@ public partial class Panel : Node
 	private int minutes = 0;
 	private int seconds = 0;
 	private int msec = 0;
+	private int _coins = 0;
 
-
+	private DatabaseConnector _databaseConnector;
+	private LevelRegistry _levelRegistry;
+	private int _levelId;
 	private Label _minutes;
 	private Label _seconds;
 	private Label _msec;
@@ -17,6 +20,12 @@ public partial class Panel : Node
 		_minutes = GetNode<Label>("Minutes");
 		_seconds = GetNode<Label>("Seconds");
 		_msec = GetNode<Label>("Msec");
+
+	
+
+		_databaseConnector = GetNode<DatabaseConnector>("/root/DatabaseConnector");
+		_levelRegistry = GetNode<LevelRegistry>("/root/LevelRegistry");
+		_levelId = _levelRegistry.GetLevelId();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,10 +53,24 @@ public partial class Panel : Node
 
 	public void OnCoinCollected(int coins)
 	{
-		if (coins >= 10)
-		{
-			Stop();
+		_coins = coins;
+	}
+
+	private void OnFlagCollected()
+	{
+		Stop();
+		GD.Print("Congradulations! You collected all the coins in: " + GetTime());
+		UserState userState = GetNode<UserState>("/root/UserState");
+		int userId = userState.UserId;
+		_databaseConnector.ConnectToDatabase(userId, _levelId, GetTime(), _coins);
+	}
+
+	private void OnFlag2Collected()
+	{
+		Stop();
 			GD.Print("Congradulations! You collected all the coins in: " + GetTime());
-		}
+			UserState userState = GetNode<UserState>("/root/UserState");
+			int userId = userState.UserId;
+			_databaseConnector.ConnectToDatabase(userId, _levelId, GetTime(), _coins);
 	}
 }

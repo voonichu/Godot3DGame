@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://dm8pvocqm3cpo"]
+
+[ext_resource type="Script" path="res://enemies/Enemy1.gd" id="1_xqv4f"]
+[ext_resource type="PackedScene" uid="uid://b8gasbkfelft3" path="res://enemies/Enemy_Trilobite.fbx" id="3_q25bn"]
+[ext_resource type="PackedScene" uid="uid://dj8s5ochmxofs" path="res://enemies/Laser.tscn" id="4_4tf3l"]
+[ext_resource type="PackedScene" uid="uid://dbvgfn5mwbket" path="res://enemies/Enemy_EyeDrone.fbx" id="4_eeibq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fg684"]
+radius = 1.33467
+height = 4.11567
+
+[node name="Stationary" type="Node3D"]
+script = ExtResource("1_xqv4f")
+can_hurt_player = true
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+
+[node name="AnimatedSprite3D_Enemy_EyeDrone#CollisionShape3D" type="CollisionShape3D" parent="Sprite3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.84522e-08, -0.507123, -1.49012e-08)
+
+[node name="Enemy_Trilobite" parent="Sprite3D" instance=ExtResource("3_q25bn")]
+
+[node name="Enemy_EyeDrone" parent="Sprite3D/Enemy_Trilobite" instance=ExtResource("4_eeibq")]
+transform = Transform3D(1.7161, 0, 0, 0, 1.77521, 0, 0, 0, 1.76338, -0.0363986, 3.26642, -0.17604)
+
+[node name="RayCast3D" parent="Sprite3D/Enemy_Trilobite" instance=ExtResource("4_4tf3l")]
+transform = Transform3D(1, 0, 0, 0, 0.694809, 0.719194, 0, -0.719194, 0.694809, 0.0134989, 2.92728, 0.549408)
+target_position = Vector3(0, -10, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0127897, 2.05597, 0.0439568)
+shape = SubResource("CapsuleShape3D_fg684")
+
+[node name="LaserTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]
