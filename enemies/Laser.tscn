@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://dj8s5ochmxofs"]
+
+[ext_resource type="Script" path="res://enemies/laser.gd" id="1_tqeak"]
+[ext_resource type="PackedScene" uid="uid://fcxeh4m06hqr" path="res://enemies/end_particles.tscn" id="2_xh6y0"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_e5nfn"]
+flip_faces = true
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gqljp"]
+transparency = 1
+albedo_color = Color(1, 0.188235, 0.384314, 1)
+emission_enabled = true
+emission = Color(1, 0.188235, 0.384314, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_fq0e0"]
+height = 8.0
+radius = 0.0565804
+
+[node name="RayCast3D" type="RayCast3D"]
+script = ExtResource("1_tqeak")
+
+[node name="BeamMesh3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.88388, 0, -0.467714, 0, 1, 0, 0.467714, 0, 0.88388, 0, 0, 0)
+mesh = SubResource("CylinderMesh_e5nfn")
+surface_material_override/0 = SubResource("StandardMaterial3D_gqljp")
+
+[node name="EndParticles" parent="BeamMesh3D" instance=ExtResource("2_xh6y0")]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.022717, 0.0404978, 0.0486891)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.88388, 0, -0.467714, 0, 1, 0, 0.467714, 0, 0.88388, 0.0124543, -3.8717, 0.0135373)
+shape = SubResource("CylinderShape3D_fq0e0")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

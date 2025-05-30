@@ -1,15 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://kvlblwwkrx6c"]
+[gd_scene load_steps=4 format=3 uid="uid://kvlblwwkrx6c"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4rqy3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cukyp"]
+albedo_color = Color(0.122252, 0.122252, 0.122252, 1)
+metallic = 0.33
+roughness = 0.82
+clearcoat_enabled = true
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8je21"]
 radius = 0.263428
 
-[node name="Bullet" type="RigidBody3D"]
+[node name="Bullet" type="RigidBody3D" groups=["Bullet"]]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("SphereMesh_4rqy3")
+surface_material_override/0 = SubResource("StandardMaterial3D_cukyp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_8je21")

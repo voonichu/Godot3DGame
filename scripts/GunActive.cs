@@ -15,7 +15,6 @@ public partial class GunActive : Timer
 	{
 		_gunCooldown = GetNode<Timer>("GunCooldown");
 		Start();
-		GD.Print("gun cooldown started");
 		_player = GetNode<CharacterBody3D>("/root/Main/Player");
 
 		// Connect the signal to a method

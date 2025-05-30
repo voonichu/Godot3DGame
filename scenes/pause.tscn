@@ -21,10 +21,26 @@ offset_right = 1279.0
 offset_bottom = 718.0
 texture = SubResource("CanvasTexture_tmkbv")
 
-[node name="ContinueButton" type="Button" parent="."]
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 500.0
-offset_top = 300.0
-offset_right = 800.0
-offset_bottom = 350.0
+offset_left = 364.0
+offset_top = 246.0
+offset_right = 764.0
+offset_bottom = 382.0
+scale = Vector2(1.5, 1.5)
+
+[node name="ContinueButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
 text = "Continue"
+
+[node name="RetryButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+text = "Retry"
+
+[node name="ReturnButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="QuitButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+text = "Quit"

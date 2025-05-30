@@ -176,6 +176,24 @@ offset_right = 890.0
 offset_bottom = 650.0
 text = "Quit"
 
+[node name="Button4" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 655.0
+offset_right = 640.0
+offset_bottom = 705.0
+text = "Register"
+
+[node name="Button5" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 640.0
+offset_top = 655.0
+offset_right = 890.0
+offset_bottom = 705.0
+text = "Login"
+
 [connection signal="pressed" from="UI/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="UI/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="UI/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="UI/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="UI/Button5" to="." method="_on_button_5_pressed"]

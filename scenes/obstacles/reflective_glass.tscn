@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://bj3xsp2pt8bgu"]
+
+[ext_resource type="PackedScene" uid="uid://b7ter4nkh3iti" path="res://objects/Epic Esboo.glb" id="1_tffob"]
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_ljdc8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7e18"]
+albedo_color = Color(0.769621, 0.184093, 0.275747, 0.568627)
+metallic = 0.25
+roughness = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nsred"]
+size = Vector3(37.974, 80.583, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iimtg"]
+size = Vector3(35, 78, 2)
+
+[node name="ReflectiveGlass" instance=ExtResource("1_tffob")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+script = ExtResource("2_ljdc8")
+is_reflective = true
+
+[node name="Mesh_Mesh_head_geo_001_lambert2SG_001" parent="Node" index="0"]
+material_override = SubResource("StandardMaterial3D_v7e18")
+
+[node name="Area3D" type="Area3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0834808, 39.1792, -8.44917)
+shape = SubResource("BoxShape3D_nsred")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.083, 39.179, -8.449)
+shape = SubResource("BoxShape3D_iimtg")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

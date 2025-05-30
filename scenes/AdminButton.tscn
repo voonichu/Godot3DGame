@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgnhh041nhqfn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lxuml"]
+bg_color = Color(0.575981, 0, 0.0962217, 1)
+
+[node name="Button" type="Button"]
+offset_right = 376.0
+offset_bottom = 149.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_lxuml")
+text = "Delete"

@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+@onready var coinUI = $HBoxContainer/Coins
+
 func _on_coin_collected(coins):
 	
-	$Coins.text = str(coins) # Update the coin display
+	coinUI.text = str(coins) # Update the coin display

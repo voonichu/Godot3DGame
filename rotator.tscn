@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlyvlfc0it0ep"]
+
+[ext_resource type="Script" path="res://enemies/Enemy2.cs" id="1_ak38f"]
+[ext_resource type="PackedScene" uid="uid://c0h6i87frqe07" path="res://enemies/Enemy_QuadShell.fbx" id="1_eq215"]
+
+[node name="Follower" type="Node3D"]
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+script = ExtResource("1_ak38f")
+
+[node name="Enemy_QuadShell" parent="AnimatedSprite3D" instance=ExtResource("1_eq215")]

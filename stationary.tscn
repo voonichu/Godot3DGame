@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://d17wqx1h4dqtb"]
+
+[ext_resource type="Script" path="res://Enemy1.cs" id="1_mi8un"]
+[ext_resource type="PackedScene" uid="uid://c4aiie3g6p2p2" path="res://enemies/Enemy_Trilobite.fbx_out/FBX/Enemy_Trilobite.fbx" id="1_yd1nk"]
+[ext_resource type="PackedScene" uid="uid://c0btjnu40ka0w" path="res://enemies/Enemy_EyeDrone.fbx_out/FBX/Enemy_EyeDrone.fbx" id="2_ncxus"]
+[ext_resource type="Script" path="res://enemies/Enemy_Trilobite.fbx_out/FBX/Enemy1a.cs" id="3_jtbx3"]
+
+[node name="Stationary" type="Node3D"]
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+script = ExtResource("1_mi8un")
+
+[node name="Enemy_Trilobite" parent="AnimatedSprite3D" instance=ExtResource("1_yd1nk")]
+script = ExtResource("3_jtbx3")
+
+[node name="Enemy_EyeDrone" parent="AnimatedSprite3D" instance=ExtResource("2_ncxus")]
+transform = Transform3D(2.1339, 0, 0, 0, 1.97191, 0, 0, 0, 2.00724, -0.0072284, 3.32151, -0.319581)
